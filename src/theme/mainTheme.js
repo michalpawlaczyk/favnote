@@ -12,6 +12,7 @@ const theme = {
     blueTransparent: '#2A8BF240',
     red: '#ff3366',
     redTransparent: '#ff336640',
+    grey: '#707C97',
   },
 };
 
