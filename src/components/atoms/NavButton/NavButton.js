@@ -38,17 +38,18 @@ const StyledActiveLine = styled.div`
   border-radius: 3px;
 `;
 
-const NavButton = ({ active, icon: Icon }) => (
+const NavButton = ({ active, icon: Icon, children }) => (
   <StyledButton>
     {active && <StyledActiveLine />}
     <StyledImage>{active ? <Icon stroke="#2a8bf2" /> : <Icon />}</StyledImage>
-    <StyledParagraph active={active}>Notes</StyledParagraph>
+    <StyledParagraph active={active}>{children}</StyledParagraph>
   </StyledButton>
 );
 
 NavButton.propTypes = {
   icon: PropTypes.instanceOf(Object).isRequired,
   active: PropTypes.bool,
+  children: PropTypes.string.isRequired,
 };
 
 NavButton.defaultProps = {
