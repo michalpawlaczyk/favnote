@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import NavBar from './NavBar';
+import NavMenu from './NavMenu';
 
 storiesOf('Organisms/Navigation', module).add('Normal', () => (
-  <NavBar mailAddress="example@mail.com" />
+  <NavMenu mailAddress="example@mail.com" />
 ));

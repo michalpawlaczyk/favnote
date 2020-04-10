@@ -39,7 +39,7 @@ const StyledImage = styled.img`
   margin: 0 auto;
 `;
 
-const NavBar = ({ mailAddress, avatar }) => (
+const NavMenu = ({ mailAddress, avatar }) => (
   <StyledWrapper>
     <StyledUserWrapper>
       <StyledImage src={avatar} alt="user avatar." />
@@ -56,14 +56,14 @@ const NavBar = ({ mailAddress, avatar }) => (
   </StyledWrapper>
 );
 
-NavBar.propTypes = {
+NavMenu.propTypes = {
   mailAddress: PropTypes.string,
   avatar: PropTypes.string,
 };
 
-NavBar.defaultProps = {
+NavMenu.defaultProps = {
   mailAddress: '',
   avatar: Avatar,
 };
 
-export default NavBar;
+export default NavMenu;
