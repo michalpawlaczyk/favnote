@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import magnifierIcon from 'static/search.svg';
@@ -13,6 +13,7 @@ const StyledInput = styled.input`
   border-radius: 6px;
   font-size: 1.8rem;
   transition: 0.3s;
+
   font-weight: ${({ theme }) => theme.font.weight.medium};
 
   ${({ search }) =>
@@ -24,22 +25,6 @@ const StyledInput = styled.input`
       background-position: 15px 50%;
       background-repeat: no-repeat;
     `};
-
-  /* ::before {
-    content: '';
-    background: #000000;
-    display: block;
-    height: 50px;
-    max-width: 550px;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 3;
-    box-shadow: 0 10px 30px 0 #00000045;
-  } */
-  :focus {
-  }
 `;
 
 const StyledLabel = styled.label`
@@ -56,7 +41,13 @@ const StyledLabel = styled.label`
     search &&
     css`
       transform: translate(40px, 70%);
-    `}
+    `};
+
+  ${({ notEmpty }) =>
+    notEmpty &&
+    css`
+      transform: translate(10px, -100%);
+    `};
 
   ${StyledInput}:focus + & {
     transform: translate(10px, -100%);
@@ -69,17 +60,35 @@ const StyledWrapper = styled.div`
   height: 100%;
   max-width: 550px;
   width: 100%;
-  margin: 20px 10px;
+  margin: 20px 0;
 `;
 
-const Input = ({ id, name, type, label, search }) => (
-  <StyledWrapper>
-    <StyledInput id={id} name={name} type={type} search={search} />
-    <StyledLabel for={id} search={search}>
-      {label}
-    </StyledLabel>
-  </StyledWrapper>
-);
+const Input = ({ id, name, type, label, search, ...other }) => {
+  const [isValueNotEmpty, setIsValueNotEmpty] = useState(false);
+  const handleInputChange = (event) => {
+    if (event.target.value.length > 0) {
+      setIsValueNotEmpty(true);
+    } else {
+      setIsValueNotEmpty(false);
+    }
+  };
+
+  return (
+    <StyledWrapper>
+      <StyledInput
+        id={id}
+        name={name}
+        type={type}
+        search={search}
+        onKeyDown={(event) => handleInputChange(event)}
+        {...other}
+      />
+      <StyledLabel htmlFor={id} search={search} notEmpty={isValueNotEmpty}>
+        {label}
+      </StyledLabel>
+    </StyledWrapper>
+  );
+};
 
 Input.propTypes = {
   id: PropTypes.string.isRequired,
