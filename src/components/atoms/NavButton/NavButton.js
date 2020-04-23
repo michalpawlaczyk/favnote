@@ -12,6 +12,7 @@ const StyledButton = styled.button`
   display: flex;
   align-items: center;
   padding: 0;
+  text-decoration: none;
 `;
 
 const StyledParagraph = styled(Paragraph)`
@@ -38,22 +39,22 @@ const StyledActiveLine = styled.div`
   border-radius: 3px;
 `;
 
-const NavButton = ({ active, icon: Icon, children }) => (
-  <StyledButton>
-    {active && <StyledActiveLine />}
-    <StyledImage>{active ? <Icon stroke="#2a8bf2" /> : <Icon />}</StyledImage>
-    <StyledParagraph active={active}>{children}</StyledParagraph>
-  </StyledButton>
-);
+const NavButton = ({ icon: Icon, children, ...others }) => {
+  console.log(others);
+  const isActive = false;
+
+  return (
+    <StyledButton {...others}>
+      {isActive && <StyledActiveLine />}
+      <StyledImage>{isActive ? <Icon stroke="#2a8bf2" /> : <Icon />}</StyledImage>
+      <StyledParagraph active={isActive}>{children}</StyledParagraph>
+    </StyledButton>
+  );
+};
 
 NavButton.propTypes = {
   icon: PropTypes.instanceOf(Object).isRequired,
-  active: PropTypes.bool,
   children: PropTypes.string.isRequired,
-};
-
-NavButton.defaultProps = {
-  active: false,
 };
 
 export default NavButton;

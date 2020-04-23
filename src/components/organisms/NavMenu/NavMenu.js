@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 import NavButton from 'components/atoms/NavButton/NavButton';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import { ReactComponent as NoteSvg } from 'static/note.svg';
@@ -8,6 +9,7 @@ import { ReactComponent as TwitterSvg } from 'static/twitter.svg';
 import { ReactComponent as LogoutSvg } from 'static/power.svg';
 import { ReactComponent as ArticleSvg } from 'static/article.svg';
 import Avatar from 'static/avatar.svg';
+import { routes } from 'routes/routes';
 
 const StyledWrapper = styled.section`
   z-index: 999;
@@ -46,11 +48,15 @@ const NavMenu = ({ mailAddress, avatar }) => (
       <StyledParagraph>{mailAddress}</StyledParagraph>
     </StyledUserWrapper>
     <StyledNavButtonsWrapper>
-      <NavButton icon={NoteSvg} active>
-        Note
+      <NavButton as={NavLink} to={routes.notes} icon={NoteSvg}>
+        Notes
       </NavButton>
-      <NavButton icon={ArticleSvg}>Articles</NavButton>
-      <NavButton icon={TwitterSvg}>Twitters</NavButton>
+      <NavButton as={NavLink} to={routes.articles} icon={ArticleSvg}>
+        Articles
+      </NavButton>
+      <NavButton as={NavLink} to={routes.twitters} icon={TwitterSvg}>
+        Twitters
+      </NavButton>
     </StyledNavButtonsWrapper>
     <NavButton icon={LogoutSvg}>Log out</NavButton>
   </StyledWrapper>
