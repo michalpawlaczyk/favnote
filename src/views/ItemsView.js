@@ -1,17 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'hooks/useParams';
 import ItemsTemplate from 'templates/ItemsTemplate';
 import Card from 'components/molecules/Card/Card';
 
 const ItemsView = () => {
-  const items = [
-    {
-      id: 1,
-      title: 'Example title',
-      twitterURL: '',
-      articleURL: '',
-      description: 'example description',
-    },
-  ];
+  const { type } = useParams();
+  const items = useSelector((state) => state[type]);
 
   const handleRemove = () => console.log('Removed');
 
