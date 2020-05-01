@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { useParams } from 'hooks/useParams';
 import { removeItem } from 'actions';
 import ItemsTemplate from 'templates/ItemsTemplate';
@@ -9,6 +10,11 @@ const ItemsView = () => {
   const { type } = useParams();
   const items = useSelector((state) => state[type]);
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleItemClick = (id) => {
+    history.push(`/item?type=${type}&id=${id}`);
+  };
 
   return (
     <ItemsTemplate>
@@ -21,6 +27,7 @@ const ItemsView = () => {
             twitterURL={twitterURL}
             articleURL={articleURL}
             onRemoveClick={() => dispatch(removeItem(type, id))}
+            onItemClick={() => handleItemClick(id)}
           />
         ))}
     </ItemsTemplate>

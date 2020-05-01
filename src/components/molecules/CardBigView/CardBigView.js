@@ -10,7 +10,7 @@ const StyledWrapper = styled.section`
   width: 80%;
   max-width: 1600px;
   padding: 36px;
-  margin: 0 auto;
+  margin: 40px auto;
   background: #ffffff;
   border-radius: 6px;
   box-shadow: 0 10px 30px 0 #00000015;
@@ -56,7 +56,7 @@ const StyledDescriptionInput = styled(TextAreaAutosize)`
 const CardBigView = ({ onRemoveClick, onEditClick, title, description, isEditClicked }) => (
   <StyledWrapper>
     {isEditClicked ? (
-      <StyledTitleInput type="text" name="title" value={title} />
+      <StyledTitleInput type="text" name="title" defaultValue={title} />
     ) : (
       <Heading small as="h2">
         {title}
@@ -65,9 +65,7 @@ const CardBigView = ({ onRemoveClick, onEditClick, title, description, isEditCli
     <StyledLine />
     <StyledParagraphWrapper>
       {isEditClicked ? (
-        <StyledDescriptionInput type="text" name="description">
-          {description}
-        </StyledDescriptionInput>
+        <StyledDescriptionInput type="text" name="description" defaultValue={description} />
       ) : (
         <Paragraph>{description}</Paragraph>
       )}

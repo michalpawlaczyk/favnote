@@ -7,6 +7,7 @@ import store from 'store';
 import GlobalStyle from 'theme/GlobalTheme';
 import MainTemplate from 'templates/MainTemplate';
 import ItemsView from 'views/ItemsView';
+import ItemView from 'views/ItemView';
 import theme from 'theme/mainTheme';
 
 const Root = () => (
@@ -18,6 +19,7 @@ const Root = () => (
           <Switch>
             <Route exact path={routes.home} render={() => <Redirect to={routes.notes} />} />
             <Route exact path={routes.items} component={ItemsView} />
+            <Route exact path={routes.item} component={ItemView} />
           </Switch>
         </MainTemplate>
       </ThemeProvider>
