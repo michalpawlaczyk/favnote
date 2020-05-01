@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import TextAreaAutosize from 'react-textarea-autosize';
+import { useOutsideClick } from 'hooks/useOutsideClick';
 import Heading from 'components/atoms/Heading/Heading';
 import Input from 'components/atoms/Input/Input';
 import Button from 'components/atoms/Button/Button';
@@ -15,7 +16,7 @@ const StyledWrapper = styled.section`
   top: 0;
   right: 0;
   transition: 0.3s;
-  transform: ${({ isVisible }) => (isVisible ? 'translateX(0)' : 'translateX(-100%)')};
+  transform: ${({ isVisible }) => (isVisible ? 'translateX(0)' : 'translateX(100%)')};
   box-shadow: 0 10px 30px 0 #00000015;
   padding: 0 20px;
   background: linear-gradient(90deg, #f3f3fb 0%, #fdfbfd 100%);
@@ -46,7 +47,9 @@ const StyledLine = styled.div`
   margin: 15px 0;
 `;
 
-const NewItemBar = ({ pageContext, isVisible }) => {
+const NewItemBar = ({ pageContext, isVisible, handleClose }) => {
+  const { ref } = useOutsideClick(handleClose, isVisible);
+
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -60,7 +63,7 @@ const NewItemBar = ({ pageContext, isVisible }) => {
   });
 
   return (
-    <StyledWrapper isVisible={isVisible}>
+    <StyledWrapper ref={ref} isVisible={isVisible}>
       <Heading as="h2">Add new note</Heading>
       <StyledLine />
       <StyledFormWrapper onSubmit={formik.handleSubmit}>
@@ -110,10 +113,12 @@ const NewItemBar = ({ pageContext, isVisible }) => {
 NewItemBar.propTypes = {
   pageContext: PropTypes.oneOf(['notes', 'twitters', 'articles']),
   isVisible: PropTypes.bool,
+  handleClose: PropTypes.func,
 };
 NewItemBar.defaultProps = {
   pageContext: 'notes',
   isVisible: false,
+  handleClose: (isVisible) => !isVisible,
 };
 
 export default NewItemBar;
