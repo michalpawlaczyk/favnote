@@ -1,3 +1,5 @@
+import { actions } from 'actions';
+
 const initialState = {
   notes: [
     {
@@ -50,8 +52,17 @@ const initialState = {
 };
 
 const rootReducer = (state = initialState, action) => {
-  console.log(action);
-  return state;
+  switch (action.type) {
+    case actions.REMOVE_ITEM:
+      return {
+        ...state,
+        [action.payload.type]: [
+          ...state[action.payload.type].filter((item) => item.id !== action.payload.id),
+        ],
+      };
+    default:
+      return state;
+  }
 };
 
 export default rootReducer;

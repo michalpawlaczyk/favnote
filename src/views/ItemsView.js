@@ -1,14 +1,14 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'hooks/useParams';
+import { removeItem } from 'actions';
 import ItemsTemplate from 'templates/ItemsTemplate';
 import Card from 'components/molecules/Card/Card';
 
 const ItemsView = () => {
   const { type } = useParams();
   const items = useSelector((state) => state[type]);
-
-  const handleRemove = () => console.log('Removed');
+  const dispatch = useDispatch();
 
   return (
     <ItemsTemplate>
@@ -20,7 +20,7 @@ const ItemsView = () => {
             description={description}
             twitterURL={twitterURL}
             articleURL={articleURL}
-            onRemoveClick={handleRemove}
+            onRemoveClick={() => dispatch(removeItem(type, id))}
           />
         ))}
     </ItemsTemplate>
