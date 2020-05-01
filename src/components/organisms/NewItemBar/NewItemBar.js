@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
 import TextAreaAutosize from 'react-textarea-autosize';
+import { addItem } from 'actions';
 import { useOutsideClick } from 'hooks/useOutsideClick';
 import Heading from 'components/atoms/Heading/Heading';
 import Input from 'components/atoms/Input/Input';
@@ -49,7 +51,7 @@ const StyledLine = styled.div`
 
 const NewItemBar = ({ pageContext, isVisible, handleClose }) => {
   const { ref } = useOutsideClick(handleClose, isVisible);
-
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -57,8 +59,14 @@ const NewItemBar = ({ pageContext, isVisible, handleClose }) => {
       twitterURL: '',
       description: '',
     },
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+    onSubmit: (values, { resetForm }) => {
+      dispatch(
+        addItem({
+          type: pageContext,
+          ...values,
+        }),
+      );
+      resetForm();
     },
   });
 
