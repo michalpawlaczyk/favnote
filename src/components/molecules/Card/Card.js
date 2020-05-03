@@ -32,8 +32,8 @@ const StyledParagraphWrapper = styled.div`
   -webkit-box-orient: vertical;
 `;
 
-const Card = ({ title, description, onRemoveClick }) => (
-  <StyledWrapper>
+const Card = ({ title, description, onRemoveClick, onItemClick }) => (
+  <StyledWrapper onClick={onItemClick}>
     <Heading small>{title}</Heading>
     <StyledLine />
     <StyledParagraphWrapper>
@@ -47,6 +47,11 @@ Card.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   onRemoveClick: PropTypes.func.isRequired,
+  onItemClick: PropTypes.func,
+};
+
+Card.defaultProps = {
+  onItemClick: null,
 };
 
 export default Card;
