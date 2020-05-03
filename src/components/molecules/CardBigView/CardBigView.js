@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TextAreaAutosize from 'react-textarea-autosize';
+import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { editItem } from 'actions';
 import Heading from 'components/atoms/Heading/Heading';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import Button from 'components/atoms/Button/Button';
@@ -38,6 +41,7 @@ const StyledButtonWrapper = styled.div`
 
 const StyledTitleInput = styled.input`
   margin: 15px 0 0 0;
+  width: 100%;
   border: none;
   font-size: 1.8rem;
   font-weight: ${({ theme }) => theme.font.weight.bold};
@@ -53,31 +57,80 @@ const StyledDescriptionInput = styled(TextAreaAutosize)`
   font-family: inherit;
 `;
 
-const CardBigView = ({ onRemoveClick, onEditClick, title, description, isEditClicked }) => (
-  <StyledWrapper>
-    {isEditClicked ? (
-      <StyledTitleInput type="text" name="title" defaultValue={title} />
-    ) : (
-      <Heading small as="h2">
-        {title}
-      </Heading>
-    )}
-    <StyledLine />
-    <StyledParagraphWrapper>
+const CardBigView = ({
+  pageType,
+  onRemoveClick,
+  onEditClick,
+  title,
+  description,
+  isEditClicked,
+  itemId,
+}) => {
+  const dispatch = useDispatch();
+  const formik = useFormik({
+    initialValues: {
+      id: itemId,
+      title,
+      articleUrl: '',
+      twitterURL: '',
+      description,
+    },
+    onSubmit: (values) => {
+      dispatch(
+        editItem({
+          type: pageType,
+          ...values,
+        }),
+      );
+      onEditClick();
+    },
+  });
+
+  return (
+    <StyledWrapper>
       {isEditClicked ? (
-        <StyledDescriptionInput type="text" name="description" defaultValue={description} />
+        <form onSubmit={formik.handleSubmit}>
+          <StyledTitleInput
+            type="text"
+            name="title"
+            onChange={formik.handleChange}
+            value={formik.values.title}
+          />
+          <StyledLine />
+          <StyledParagraphWrapper>
+            <StyledDescriptionInput
+              type="text"
+              name="description"
+              onChange={formik.handleChange}
+              value={formik.values.description}
+            />
+          </StyledParagraphWrapper>
+          <StyledButtonWrapper>
+            <Button type="submit" blue>
+              Done
+            </Button>
+          </StyledButtonWrapper>
+        </form>
       ) : (
-        <Paragraph>{description}</Paragraph>
+        <>
+          <Heading small as="h2">
+            {title}
+          </Heading>
+          <StyledLine />
+          <StyledParagraphWrapper>
+            <Paragraph>{description}</Paragraph>
+          </StyledParagraphWrapper>
+          <StyledButtonWrapper>
+            <Button onClick={onEditClick} blue>
+              Edit
+            </Button>
+            <Button onClick={onRemoveClick}>Remove</Button>
+          </StyledButtonWrapper>
+        </>
       )}
-    </StyledParagraphWrapper>
-    <StyledButtonWrapper>
-      <Button onClick={onEditClick} blue>
-        {isEditClicked ? 'Done' : 'Edit'}
-      </Button>
-      {!isEditClicked && <Button onClick={onRemoveClick}>Remove</Button>}
-    </StyledButtonWrapper>
-  </StyledWrapper>
-);
+    </StyledWrapper>
+  );
+};
 
 CardBigView.propTypes = {
   onRemoveClick: PropTypes.func.isRequired,
@@ -85,10 +138,13 @@ CardBigView.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   isEditClicked: PropTypes.bool,
+  pageType: PropTypes.string,
+  itemId: PropTypes.number.isRequired,
 };
 
 CardBigView.defaultProps = {
   isEditClicked: false,
+  pageType: 'notes',
 };
 
 export default CardBigView;

@@ -31,6 +31,8 @@ const ItemView = () => {
           title={title}
           description={description}
           isEditClicked={isEditClicked}
+          pageType={type}
+          itemId={idAsNumber}
         />
       ) : (
         <h2>Item not found</h2>

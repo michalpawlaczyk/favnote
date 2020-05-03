@@ -1,6 +1,7 @@
 export const actions = {
   REMOVE_ITEM: 'REMOVE_ITEM',
   ADD_ITEM: 'ADD_ITEM',
+  EDIT_ITEM: 'EDIT_ITEM',
 };
 
 export const removeItem = (type, id) => {
@@ -19,6 +20,15 @@ export const addItem = (item) => {
     type: actions.ADD_ITEM,
     payload: {
       id,
+      ...item,
+    },
+  };
+};
+
+export const editItem = (item) => {
+  return {
+    type: actions.EDIT_ITEM,
+    payload: {
       ...item,
     },
   };

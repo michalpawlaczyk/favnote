@@ -1,5 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { Provider } from 'react-redux';
+import store from 'store';
 import Card from './CardBigView';
 
 const dummyData = {
@@ -10,17 +12,21 @@ const dummyData = {
 
 storiesOf('Molecules/CardBigView', module)
   .add('Normal', () => (
-    <Card
-      title={dummyData.title}
-      description={dummyData.description}
-      onRemoveClick={() => console.log('Removed!')}
-    />
+    <Provider store={store}>
+      <Card
+        title={dummyData.title}
+        description={dummyData.description}
+        onRemoveClick={() => console.log('Removed!')}
+      />
+    </Provider>
   ))
   .add('EditView', () => (
-    <Card
-      title={dummyData.title}
-      description={dummyData.description}
-      onRemoveClick={() => console.log('Removed!')}
-      isEditClicked
-    />
+    <Provider store={store}>
+      <Card
+        title={dummyData.title}
+        description={dummyData.description}
+        onRemoveClick={() => console.log('Removed!')}
+        isEditClicked
+      />
+    </Provider>
   ));
