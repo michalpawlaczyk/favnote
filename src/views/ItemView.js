@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { removeItem } from 'actions';
 import { useParams } from 'hooks/useParams';
 import CardBigView from 'components/molecules/CardBigView/CardBigView';
+import MainTemplate from 'templates/MainTemplate';
 
 const ItemView = () => {
   const [isEditClicked, setIsEditClicked] = useState(false);
@@ -11,8 +12,8 @@ const ItemView = () => {
   const idAsNumber = parseInt(id, 10);
   const dispatch = useDispatch();
   const history = useHistory();
-  const { title, description } = useSelector((state) =>
-    state[type].find((item) => item.id === idAsNumber),
+  const { title, description } = useSelector(({ itemsReducer }) =>
+    itemsReducer[type].find((item) => item.id === idAsNumber),
   );
   const handleRemove = () => {
     dispatch(removeItem(type, idAsNumber));
@@ -23,7 +24,7 @@ const ItemView = () => {
   };
 
   return (
-    <>
+    <MainTemplate>
       {title && description ? (
         <CardBigView
           onRemoveClick={handleRemove}
@@ -37,7 +38,7 @@ const ItemView = () => {
       ) : (
         <h2>Item not found</h2>
       )}
-    </>
+    </MainTemplate>
   );
 };
 
