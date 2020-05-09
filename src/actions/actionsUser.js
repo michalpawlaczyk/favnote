@@ -17,13 +17,12 @@ export const LoginUserWithMail = (mail, password) => (dispatch) => {
   return Firebase.auth()
     .signInWithEmailAndPassword(mail, password)
     .then(({ user }) => {
-      const { email, emailVerified, uid } = user;
+      const { email, emailVerified } = user;
       dispatch({
         type: actions.LOGIN_USER_SUCCESS,
         payload: {
           email,
           emailVerified,
-          uid,
         },
       });
     })
