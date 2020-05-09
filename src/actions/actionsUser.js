@@ -8,7 +8,9 @@ export const actions = {
   REGISTER_USER_REQUEST: 'REGISTER_USER_REQUEST',
   REGISTER_USER_SUCCESS: 'REGISTER_USER_SUCCESS',
   REGISTER_USER_FAILURE: 'REGISTER_USER_FAILURE',
-  LOGOUT_USER: 'LOGOUT_USER',
+  LOGOUT_USER_REQUEST: 'LOGOUT_USER_REQUEST',
+  LOGOUT_USER_SUCCESS: 'LOGOUT_USER_SUCCESS',
+  LOGOUT_USER_FAILURE: 'LOGOUT_USER_FAILURE',
 };
 
 export const LoginUserWithMail = (mail, password) => (dispatch) => {
@@ -76,5 +78,21 @@ export const RegisterWithMail = (mail, password) => (dispatch) => {
     .catch((e) => {
       console.log(e.message);
       dispatch({ type: actions.REGISTER_USER_FAILURE });
+    });
+};
+
+export const Logout = () => (dispatch) => {
+  dispatch({ type: actions.LOGOUT_USER_REQUEST });
+
+  return Firebase.auth()
+    .signOut()
+    .then(() => {
+      dispatch({
+        type: actions.LOGOUT_USER_SUCCESS,
+      });
+    })
+    .catch((e) => {
+      console.log(e.message);
+      dispatch({ type: actions.LOGOUT_USER_FAILURE });
     });
 };

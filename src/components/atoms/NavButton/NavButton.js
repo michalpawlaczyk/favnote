@@ -40,7 +40,6 @@ const StyledActiveLine = styled.div`
 `;
 
 const NavButton = ({ icon: Icon, children, ...others }) => {
-  console.log(others);
   const isActive = false;
 
   return (
