@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Logout } from 'actions/actionsUser';
 import NavButton from 'components/atoms/NavButton/NavButton';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import { ReactComponent as NoteSvg } from 'static/note.svg';
@@ -41,34 +43,40 @@ const StyledImage = styled.img`
   margin: 0 auto;
 `;
 
-const NavMenu = ({ mailAddress, avatar }) => (
-  <StyledWrapper>
-    <StyledUserWrapper>
-      <StyledImage src={avatar} alt="user avatar." />
-      <StyledParagraph>{mailAddress}</StyledParagraph>
-    </StyledUserWrapper>
-    <StyledNavButtonsWrapper>
-      <NavButton as={NavLink} to={routes.notes} icon={NoteSvg}>
-        Notes
+const NavMenu = ({ avatar }) => {
+  const emailAdrress = useSelector(({ userReducer }) => userReducer.email);
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(Logout());
+  };
+  return (
+    <StyledWrapper>
+      <StyledUserWrapper>
+        <StyledImage src={avatar} alt="user avatar." />
+        <StyledParagraph>{emailAdrress}</StyledParagraph>
+      </StyledUserWrapper>
+      <StyledNavButtonsWrapper>
+        <NavButton as={NavLink} to={routes.notes} icon={NoteSvg}>
+          Notes
+        </NavButton>
+        <NavButton as={NavLink} to={routes.articles} icon={ArticleSvg}>
+          Articles
+        </NavButton>
+        <NavButton as={NavLink} to={routes.twitters} icon={TwitterSvg}>
+          Twitters
+        </NavButton>
+      </StyledNavButtonsWrapper>
+      <NavButton icon={LogoutSvg} onClick={handleLogout}>
+        Log out
       </NavButton>
-      <NavButton as={NavLink} to={routes.articles} icon={ArticleSvg}>
-        Articles
-      </NavButton>
-      <NavButton as={NavLink} to={routes.twitters} icon={TwitterSvg}>
-        Twitters
-      </NavButton>
-    </StyledNavButtonsWrapper>
-    <NavButton icon={LogoutSvg}>Log out</NavButton>
-  </StyledWrapper>
-);
-
+    </StyledWrapper>
+  );
+};
 NavMenu.propTypes = {
-  mailAddress: PropTypes.string,
   avatar: PropTypes.string,
 };
 
 NavMenu.defaultProps = {
-  mailAddress: '',
   avatar: Avatar,
 };
 
