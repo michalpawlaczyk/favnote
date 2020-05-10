@@ -1,55 +1,6 @@
 import { actions } from 'actions';
 
-const initialState = {
-  notes: [
-    {
-      id: 1,
-      title: 'Example title',
-      twitterURL: '',
-      articleURL: '',
-      description: 'example description',
-    },
-    {
-      id: 2,
-      title: 'Example title',
-      twitterURL: '',
-      articleURL: '',
-      description: 'example description',
-    },
-  ],
-  twitters: [
-    {
-      id: 1,
-      title: 'Example Twitter Account',
-      twitterURL: '',
-      articleURL: '',
-      description: 'example description',
-    },
-    {
-      id: 2,
-      title: 'Example Twitter Account',
-      twitterURL: '',
-      articleURL: '',
-      description: 'example description',
-    },
-  ],
-  articles: [
-    {
-      id: 1,
-      title: 'Example Article',
-      twitterURL: '',
-      articleURL: '',
-      description: 'example description',
-    },
-    {
-      id: 2,
-      title: 'Example Article',
-      twitterURL: '',
-      articleURL: '',
-      description: 'example description',
-    },
-  ],
-};
+const initialState = {};
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -77,6 +28,12 @@ const rootReducer = (state = initialState, action) => {
           }),
         ],
       };
+    case actions.FETCH_ITEMS_SUCCESS: {
+      return {
+        ...state,
+        [action.payload.type]: action.payload.data,
+      };
+    }
     default:
       return state;
   }
