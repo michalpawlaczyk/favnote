@@ -2,7 +2,9 @@ import * as Firebase from 'firebase/app';
 import 'firebase/database';
 
 export const actions = {
-  REMOVE_ITEM: 'REMOVE_ITEM',
+  REMOVE_ITEM_REQUEST: 'REMOVE_ITEM_REQUEST',
+  REMOVE_ITEM_SUCCESS: 'REMOVE_ITEM_SUCCESS',
+  REMOVE_ITEM_FAILURE: 'REMOVE_ITEM_FAILURE',
   ADD_ITEM_REQUEST: 'ADD_ITEM_REQUEST',
   ADD_ITEM_SUCCESS: 'ADD_ITEM_SUCCESS',
   ADD_ITEM_FAILURE: 'ADD_ITEM_FAILURE',
@@ -14,14 +16,25 @@ export const actions = {
 
 const getUid = () => Firebase.auth().currentUser.uid;
 
-export const removeItem = (type, id) => {
-  return {
-    type: actions.REMOVE_ITEM,
-    payload: {
-      type,
-      id,
-    },
-  };
+export const removeItem = (type, id) => (dispatch) => {
+  dispatch({ type: actions.REMOVE_ITEM_REQUEST });
+
+  return Firebase.database()
+    .ref(`${getUid()}/items/${type}/${id}`)
+    .remove()
+    .then(() => {
+      dispatch({
+        type: actions.REMOVE_ITEM_SUCCESS,
+        payload: {
+          type,
+          id,
+        },
+      });
+    })
+    .catch((err) => {
+      dispatch({ type: actions.REMOVE_ITEM_FAILURE });
+      console.error(err);
+    });
 };
 
 export const addItem = (item) => (dispatch) => {
