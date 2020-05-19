@@ -3,12 +3,16 @@ import 'firebase/database';
 
 export const actions = {
   REMOVE_ITEM: 'REMOVE_ITEM',
-  ADD_ITEM: 'ADD_ITEM',
+  ADD_ITEM_REQUEST: 'ADD_ITEM_REQUEST',
+  ADD_ITEM_SUCCESS: 'ADD_ITEM_SUCCESS',
+  ADD_ITEM_FAILURE: 'ADD_ITEM_FAILURE',
   EDIT_ITEM: 'EDIT_ITEM',
   FETCH_ITEMS_REQUEST: 'FETCH_ITEMS_REQUEST',
   FETCH_ITEMS_SUCCESS: 'FETCH_ITEMS_SUCCESS',
   FETCH_ITEMS_FAILURE: 'FETCH_ITEMS_FAILURE',
 };
+
+const getUid = () => Firebase.auth().currentUser.uid;
 
 export const removeItem = (type, id) => {
   return {
@@ -20,15 +24,29 @@ export const removeItem = (type, id) => {
   };
 };
 
-export const addItem = (item) => {
+export const addItem = (item) => (dispatch) => {
+  dispatch({ type: actions.ADD_ITEM_REQUEST });
   const id = Date.now();
-  return {
-    type: actions.ADD_ITEM,
-    payload: {
+  return Firebase.database()
+    .ref(`${getUid()}/items/${item.type}/${id}`)
+    .set({
       id,
       ...item,
-    },
-  };
+    })
+    .then(() => {
+      dispatch({
+        type: actions.ADD_ITEM_SUCCESS,
+        itemID: id,
+        payload: {
+          id,
+          ...item,
+        },
+      });
+    })
+    .catch((err) => {
+      dispatch({ type: actions.ADD_ITEM_FAILURE });
+      console.error(err);
+    });
 };
 
 export const editItem = (item) => {
@@ -42,9 +60,8 @@ export const editItem = (item) => {
 
 export const fetchItems = (type) => (dispatch) => {
   dispatch({ type: actions.FETCH_ITEMS_REQUEST });
-  const { uid } = Firebase.auth().currentUser;
   return Firebase.database()
-    .ref(`${uid}/items/${type}`)
+    .ref(`${getUid()}/items/${type}`)
     .once('value')
     .then((snapshot) => {
       const data = snapshot.val();

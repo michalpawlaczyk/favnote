@@ -11,7 +11,7 @@ const ItemsView = () => {
   const { type } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
-  const items = useSelector(({ itemsReducer }) => itemsReducer[type]);
+  const items = useSelector(({ itemsReducer }) => (itemsReducer[type] ? itemsReducer[type] : {}));
   const handleItemClick = (id) => {
     history.push(`/item?type=${type}&id=${id}`);
   };
@@ -23,21 +23,22 @@ const ItemsView = () => {
   return (
     <MainTemplate>
       <ItemsTemplate>
-        {items !== undefined &&
-          Object.keys(items).map((item) => {
-            const { id, title, description, twitterURL, articleURL } = items[item];
-            return (
-              <Card
-                key={id}
-                title={title}
-                description={description}
-                twitterURL={twitterURL}
-                articleURL={articleURL}
-                onRemoveClick={() => dispatch(removeItem(type, id))}
-                onItemClick={() => handleItemClick(id)}
-              />
-            );
-          })}
+        {typeof items !== 'undefined'
+          ? Object.keys(items).map((item) => {
+              const { id, title, description, twitterURL, articleURL } = items[item];
+              return (
+                <Card
+                  key={id}
+                  title={title}
+                  description={description}
+                  twitterURL={twitterURL}
+                  articleURL={articleURL}
+                  onRemoveClick={() => dispatch(removeItem(type, id))}
+                  onItemClick={() => handleItemClick(id)}
+                />
+              );
+            })
+          : null}
       </ItemsTemplate>
     </MainTemplate>
   );
