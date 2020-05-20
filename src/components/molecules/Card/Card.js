@@ -32,13 +32,19 @@ const StyledParagraphWrapper = styled.div`
   -webkit-box-orient: vertical;
 `;
 
+const ContentWrapper = styled.div`
+  cursor: pointer;
+`;
+
 const Card = ({ title, description, onRemoveClick, onItemClick }) => (
-  <StyledWrapper onClick={onItemClick}>
-    <Heading small>{title}</Heading>
-    <StyledLine />
-    <StyledParagraphWrapper>
-      <Paragraph>{description}</Paragraph>
-    </StyledParagraphWrapper>
+  <StyledWrapper>
+    <ContentWrapper onClick={onItemClick}>
+      <Heading small>{title}</Heading>
+      <StyledLine />
+      <StyledParagraphWrapper>
+        <Paragraph>{description}</Paragraph>
+      </StyledParagraphWrapper>
+    </ContentWrapper>
     <Button onClick={onRemoveClick}>Remove</Button>
   </StyledWrapper>
 );
