@@ -8,6 +8,8 @@ import NewItemBar from 'components/organisms/NewItemBar/NewItemBar';
 const StyledWrapper = styled.div``;
 
 const StyledButton = styled.button`
+  z-index: 2;
+  cursor: pointer;
   position: fixed;
   width: 55px;
   height: 55px;
@@ -17,6 +19,8 @@ const StyledButton = styled.button`
   border-radius: 50px;
   background: rgb(124, 184, 247);
   background: linear-gradient(90deg, rgba(124, 184, 247, 1) 0%, rgba(42, 139, 242, 1) 85%);
+  transition: 0.4s;
+  transform: ${({ isOpen }) => (isOpen ? 'rotateZ(-45deg)' : 'rotateZ(0)')};
 
   &::after,
   &::before {
@@ -41,8 +45,28 @@ const StyledButton = styled.button`
 
 const StyledItemsWrapper = styled.section`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 40px;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 30px;
+  grid-gap: 30px;
+
+  @media (max-width: 1900px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 650px) {
+    align-items: center;
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
+
+const StyledInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `;
 
 const ItemsTemplate = ({ children }) => {
@@ -55,9 +79,11 @@ const ItemsTemplate = ({ children }) => {
 
   return (
     <StyledWrapper>
-      <SearchInput id="search" name="search" type="text" label="Search" search />
+      <StyledInputWrapper>
+        <SearchInput id="search" name="search" type="text" label="Search" search />
+      </StyledInputWrapper>
       <StyledItemsWrapper>{children}</StyledItemsWrapper>
-      <StyledButton onClick={toggleNewItemBar} />
+      <StyledButton onClick={toggleNewItemBar} isOpen={isNewItemBarVisible} />
       <NewItemBar
         handleClose={toggleNewItemBar}
         isVisible={isNewItemBarVisible}
