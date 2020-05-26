@@ -8,7 +8,9 @@ export const actions = {
   ADD_ITEM_REQUEST: 'ADD_ITEM_REQUEST',
   ADD_ITEM_SUCCESS: 'ADD_ITEM_SUCCESS',
   ADD_ITEM_FAILURE: 'ADD_ITEM_FAILURE',
-  EDIT_ITEM: 'EDIT_ITEM',
+  EDIT_ITEM_REQUEST: 'EDIT_ITEM_REQUEST',
+  EDIT_ITEM_SUCCESS: 'EDIT_ITEM_SUCCESS',
+  EDIT_ITEM_FAILURE: 'EDIT_ITEM_FAILURE',
   FETCH_ITEMS_REQUEST: 'FETCH_ITEMS_REQUEST',
   FETCH_ITEMS_SUCCESS: 'FETCH_ITEMS_SUCCESS',
   FETCH_ITEMS_FAILURE: 'FETCH_ITEMS_FAILURE',
@@ -49,7 +51,6 @@ export const addItem = (item) => (dispatch) => {
     .then(() => {
       dispatch({
         type: actions.ADD_ITEM_SUCCESS,
-        itemID: id,
         payload: {
           id,
           ...item,
@@ -62,13 +63,25 @@ export const addItem = (item) => (dispatch) => {
     });
 };
 
-export const editItem = (item) => {
-  return {
-    type: actions.EDIT_ITEM,
-    payload: {
+export const editItem = (item) => (dispatch) => {
+  dispatch({ type: actions.EDIT_ITEM_REQUEST });
+  return Firebase.database()
+    .ref(`${getUid()}/items/${item.type}/${item.id}`)
+    .update({
       ...item,
-    },
-  };
+    })
+    .then(() => {
+      dispatch({
+        type: actions.EDIT_ITEM_SUCCESS,
+        payload: {
+          ...item,
+        },
+      });
+    })
+    .catch((err) => {
+      dispatch({ type: actions.EDIT_ITEM_FAILURE });
+      console.error(err);
+    });
 };
 
 export const fetchItems = (type) => (dispatch) => {
