@@ -5,7 +5,6 @@ import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import TextAreaAutosize from 'react-textarea-autosize';
 import { addItem } from 'actions';
-import { useOutsideClick } from 'hooks/useOutsideClick';
 import Heading from 'components/atoms/Heading/Heading';
 import Input from 'components/atoms/Input/Input';
 import Button from 'components/atoms/Button/Button';
@@ -50,7 +49,6 @@ const StyledLine = styled.div`
 `;
 
 const NewItemBar = ({ pageContext, isVisible, handleClose }) => {
-  const { ref } = useOutsideClick(handleClose, isVisible);
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
@@ -67,11 +65,12 @@ const NewItemBar = ({ pageContext, isVisible, handleClose }) => {
         }),
       );
       resetForm();
+      handleClose();
     },
   });
 
   return (
-    <StyledWrapper ref={ref} isVisible={isVisible}>
+    <StyledWrapper isVisible={isVisible}>
       <Heading as="h2">Add new note</Heading>
       <StyledLine />
       <StyledFormWrapper onSubmit={formik.handleSubmit}>

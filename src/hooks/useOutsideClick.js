@@ -3,6 +3,8 @@ import { useEffect, useRef } from 'react';
 export const useOutsideClick = (closeFuction, isVisible) => {
   const ref = useRef(null);
 
+  // TODO need improvment. Close button doesn't work when using this hook
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target) && isVisible) {
@@ -16,5 +18,5 @@ export const useOutsideClick = (closeFuction, isVisible) => {
     }
   }, [isVisible, closeFuction]);
 
-  return { ref };
+  return ref;
 };
