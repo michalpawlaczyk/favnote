@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import TextAreaAutosize from 'react-textarea-autosize';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { editItem } from 'actions';
 import Heading from 'components/atoms/Heading/Heading';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import Button from 'components/atoms/Button/Button';
+import LoadingAnimation from 'components/atoms/LoadingAnimation/LoadingAnimation';
 
 const StyledWrapper = styled.section`
   width: 80%;
@@ -66,6 +67,10 @@ const CardBigView = ({
   isEditClicked,
   itemId,
 }) => {
+  const [isEditingItem, isRemovingItem] = useSelector(({ itemsReducer }) => [
+    itemsReducer.isEditingItem,
+    itemsReducer.isRemovingItem,
+  ]);
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
@@ -122,9 +127,11 @@ const CardBigView = ({
           </StyledParagraphWrapper>
           <StyledButtonWrapper>
             <Button onClick={onEditClick} blue>
-              Edit
+              {isEditingItem ? <LoadingAnimation /> : 'Edit'}
             </Button>
-            <Button onClick={onRemoveClick}>Remove</Button>
+            <Button onClick={onRemoveClick} isLoading={isRemovingItem}>
+              {isRemovingItem ? <LoadingAnimation /> : 'Remove'}
+            </Button>
           </StyledButtonWrapper>
         </>
       )}

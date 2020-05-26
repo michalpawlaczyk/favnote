@@ -12,9 +12,10 @@ const ItemView = () => {
   const idAsNumber = parseInt(id, 10);
   const dispatch = useDispatch();
   const history = useHistory();
-  const { title, description } = useSelector(({ itemsReducer }) =>
-    itemsReducer[type].find((item) => item.id === idAsNumber),
-  );
+  const { title, description } = useSelector(({ itemsReducer }) => {
+    const tmp = itemsReducer[type];
+    return tmp[idAsNumber] ? tmp[idAsNumber] : {};
+  });
   const handleRemove = () => {
     dispatch(removeItem(type, idAsNumber));
     history.push(`/items?type=${type}`);
