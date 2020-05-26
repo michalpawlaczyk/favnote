@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Logout } from 'actions/actionsUser';
 import NavButton from 'components/atoms/NavButton/NavButton';
@@ -56,13 +55,13 @@ const NavMenu = ({ avatar }) => {
         <StyledParagraph>{emailAdrress}</StyledParagraph>
       </StyledUserWrapper>
       <StyledNavButtonsWrapper>
-        <NavButton as={NavLink} to={routes.notes} icon={NoteSvg}>
+        <NavButton to={routes.notes} icon={NoteSvg}>
           Notes
         </NavButton>
-        <NavButton as={NavLink} to={routes.articles} icon={ArticleSvg}>
+        <NavButton to={routes.articles} icon={ArticleSvg}>
           Articles
         </NavButton>
-        <NavButton as={NavLink} to={routes.twitters} icon={TwitterSvg}>
+        <NavButton to={routes.twitters} icon={TwitterSvg}>
           Twitters
         </NavButton>
       </StyledNavButtonsWrapper>

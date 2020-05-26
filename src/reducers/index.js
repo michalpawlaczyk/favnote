@@ -65,7 +65,6 @@ const rootReducer = (state = initialState, action) => {
         },
       };
     case actions.FETCH_ITEMS_REQUEST:
-      console.log('Loading...');
       return {
         ...state,
         isLoadingItems: true,
