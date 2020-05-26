@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import Heading from 'components/atoms/Heading/Heading';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import Button from 'components/atoms/Button/Button';
+import LoadingAnimation from 'components/atoms/LoadingAnimation/LoadingAnimation';
 
 const StyledWrapper = styled.section`
   max-height: 330px;
@@ -36,18 +38,23 @@ const ContentWrapper = styled.div`
   cursor: pointer;
 `;
 
-const Card = ({ title, description, onRemoveClick, onItemClick }) => (
-  <StyledWrapper>
-    <ContentWrapper onClick={onItemClick}>
-      <Heading small>{title}</Heading>
-      <StyledLine />
-      <StyledParagraphWrapper>
-        <Paragraph>{description}</Paragraph>
-      </StyledParagraphWrapper>
-    </ContentWrapper>
-    <Button onClick={onRemoveClick}>Remove</Button>
-  </StyledWrapper>
-);
+const Card = ({ title, description, onRemoveClick, onItemClick }) => {
+  const isRemovingItem = useSelector(({ itemsReducer }) => itemsReducer.isRemovingItem);
+  return (
+    <StyledWrapper>
+      <ContentWrapper onClick={onItemClick}>
+        <Heading small>{title}</Heading>
+        <StyledLine />
+        <StyledParagraphWrapper>
+          <Paragraph>{description}</Paragraph>
+        </StyledParagraphWrapper>
+      </ContentWrapper>
+      <Button onClick={onRemoveClick}>
+        {isRemovingItem ? <LoadingAnimation red /> : 'Remove'}
+      </Button>
+    </StyledWrapper>
+  );
+};
 
 Card.propTypes = {
   title: PropTypes.string.isRequired,

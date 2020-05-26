@@ -6,11 +6,13 @@ import { removeItem, fetchItems } from 'actions';
 import ItemsTemplate from 'templates/ItemsTemplate';
 import Card from 'components/molecules/Card/Card';
 import MainTemplate from 'templates/MainTemplate';
+import LoadingAnimation from 'components/atoms/LoadingAnimation/LoadingAnimation';
 
 const ItemsView = () => {
   const { type } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
+  const isLoading = useSelector(({ itemsReducer }) => itemsReducer.isLoadingItems);
   const items = useSelector(({ itemsReducer }) => (itemsReducer[type] ? itemsReducer[type] : {}));
   const handleItemClick = (id) => {
     history.push(`/item?type=${type}&id=${id}`);
@@ -22,24 +24,28 @@ const ItemsView = () => {
 
   return (
     <MainTemplate>
-      <ItemsTemplate>
-        {typeof items !== 'undefined'
-          ? Object.keys(items).map((item) => {
-              const { id, title, description, twitterURL, articleURL } = items[item];
-              return (
-                <Card
-                  key={id}
-                  title={title}
-                  description={description}
-                  twitterURL={twitterURL}
-                  articleURL={articleURL}
-                  onRemoveClick={() => dispatch(removeItem(type, id))}
-                  onItemClick={() => handleItemClick(id)}
-                />
-              );
-            })
-          : null}
-      </ItemsTemplate>
+      {isLoading ? (
+        <LoadingAnimation bigView />
+      ) : (
+        <ItemsTemplate>
+          {typeof items !== 'undefined'
+            ? Object.keys(items).map((item) => {
+                const { id, title, description, twitterURL, articleURL } = items[item];
+                return (
+                  <Card
+                    key={id}
+                    title={title}
+                    description={description}
+                    twitterURL={twitterURL}
+                    articleURL={articleURL}
+                    onRemoveClick={() => dispatch(removeItem(type, id))}
+                    onItemClick={() => handleItemClick(id)}
+                  />
+                );
+              })
+            : null}
+        </ItemsTemplate>
+      )}
     </MainTemplate>
   );
 };
