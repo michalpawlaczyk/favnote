@@ -12,7 +12,6 @@ const StyledWrapper = styled.section`
   max-width: 400px;
   background: #ffffff;
   border-radius: 6px;
-  margin: 30px;
   padding: 18px;
   box-shadow: 0 10px 30px 0 #00000032;
 `;
