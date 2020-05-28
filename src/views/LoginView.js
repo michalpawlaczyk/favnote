@@ -64,6 +64,7 @@ const LoginView = () => {
           label="Email"
           onChange={formik.handleChange}
           value={formik.values.email}
+          required
         />
         <Input
           id="password"
@@ -72,6 +73,7 @@ const LoginView = () => {
           label="Password"
           onChange={formik.handleChange}
           value={formik.values.password}
+          required
         />
         <StyledButtonWrapper>
           <Button type="submit">{isLogging ? <LoadingAnimation red /> : 'Login'}</Button>

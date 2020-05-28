@@ -67,6 +67,7 @@ const RegisterView = () => {
           label="Email"
           onChange={formik.handleChange}
           value={formik.values.email}
+          required
         />
         <Input
           id="password"
@@ -75,6 +76,7 @@ const RegisterView = () => {
           label="Password"
           onChange={formik.handleChange}
           value={formik.values.password}
+          required
         />
         <Input
           id="confirmpassword"
@@ -83,6 +85,7 @@ const RegisterView = () => {
           label="Confirm password"
           onChange={formik.handleChange}
           value={formik.values.confirmpassword}
+          required
         />
         <StyledButtonWrapper>
           <Button type="submit">{isRegistering ? <LoadingAnimation red /> : 'Register'}</Button>
