@@ -10,6 +10,7 @@ import Input from 'components/atoms/Input/Input';
 import Button from 'components/atoms/Button/Button';
 
 const StyledWrapper = styled.section`
+  z-index: 4;
   position: fixed;
   min-height: 100vh;
   max-width: 550px;
@@ -53,11 +54,15 @@ const NewItemBar = ({ pageContext, isVisible, handleClose }) => {
   const formik = useFormik({
     initialValues: {
       title: '',
-      articleUrl: '',
-      twitterURL: '',
+      url: '',
       description: '',
     },
     onSubmit: (values, { resetForm }) => {
+      const regex = /https?:\/\/(.)*/gm;
+      if (!regex.exec(values.url)) {
+        // eslint-disable-next-line no-param-reassign
+        values.url = `http://${values.url}`;
+      }
       dispatch(
         addItem({
           type: pageContext,
@@ -82,24 +87,14 @@ const NewItemBar = ({ pageContext, isVisible, handleClose }) => {
           onChange={formik.handleChange}
           value={formik.values.title}
         />
-        {pageContext === 'articles' && (
+        {pageContext !== 'notes' && (
           <Input
-            id="articleUrl"
-            name="articleUrl"
+            id="url"
+            name="url"
             type="text"
-            label="Article URL"
+            label="URL"
             onChange={formik.handleChange}
-            value={formik.values.articleUrl}
-          />
-        )}
-        {pageContext === 'twitters' && (
-          <Input
-            id="twitterURL"
-            name="twitterURL"
-            type="text"
-            label="Twitter URL"
-            onChange={formik.handleChange}
-            value={formik.values.twitterURL}
+            value={formik.values.url}
           />
         )}
         <StyledTextArea
@@ -108,6 +103,7 @@ const NewItemBar = ({ pageContext, isVisible, handleClose }) => {
           placeholder="Description"
           onChange={formik.handleChange}
           value={formik.values.description}
+          required
         />
         <Button type="submit" blue>
           Add

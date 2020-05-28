@@ -30,14 +30,14 @@ const ItemsView = () => {
         <ItemsTemplate>
           {typeof items !== 'undefined'
             ? Object.keys(items).map((item) => {
-                const { id, title, description, twitterURL, articleURL } = items[item];
+                const { id, title, description, url } = items[item];
                 return (
                   <Card
                     key={id}
                     title={title}
                     description={description}
-                    twitterURL={twitterURL}
-                    articleURL={articleURL}
+                    url={url}
+                    type={type}
                     onRemoveClick={() => dispatch(removeItem(type, id))}
                     onItemClick={() => handleItemClick(id)}
                   />
