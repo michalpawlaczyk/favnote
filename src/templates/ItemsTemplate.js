@@ -8,7 +8,7 @@ import NewItemBar from 'components/organisms/NewItemBar/NewItemBar';
 const StyledWrapper = styled.div``;
 
 const StyledButton = styled.button`
-  z-index: 2;
+  z-index: 5;
   cursor: pointer;
   position: fixed;
   width: 55px;
