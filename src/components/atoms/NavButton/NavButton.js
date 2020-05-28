@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { useLocation , NavLink } from 'react-router-dom';
+import { useLocation, NavLink } from 'react-router-dom';
 
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 
