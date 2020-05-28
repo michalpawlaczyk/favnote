@@ -61,6 +61,14 @@ const StyledWrapper = styled.div`
   max-width: 550px;
   width: 100%;
   margin: 20px 0;
+  ${({ search }) =>
+    search &&
+    css`
+      margin: 20px 20px;
+      @media (max-width: 570px) {
+        max-width: 90%;
+      }
+    `};
 `;
 
 const Input = ({ id, name, type, label, search, ...other }) => {
@@ -74,13 +82,14 @@ const Input = ({ id, name, type, label, search, ...other }) => {
   };
 
   return (
-    <StyledWrapper>
+    <StyledWrapper search={search}>
       <StyledInput
         id={id}
         name={name}
         type={type}
         search={search}
         onKeyDown={(event) => handleInputChange(event)}
+        onBlur={(event) => handleInputChange(event)}
         {...other}
       />
       <StyledLabel htmlFor={id} search={search} notEmpty={isValueNotEmpty}>
