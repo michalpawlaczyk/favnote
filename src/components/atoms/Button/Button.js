@@ -8,6 +8,7 @@ const Button = styled.button`
   border: none;
   border-radius: 25px;
   text-transform: capitalize;
+  cursor: pointer;
   ${({ theme, blue }) =>
     blue
       ? `color: ${theme.colors.blue}; background: ${theme.colors.blueTransparent};`

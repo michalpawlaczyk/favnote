@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { useLocation, NavLink } from 'react-router-dom';
+
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 
-const StyledButton = styled.button`
+const StyledButton = styled(NavLink)`
   background: transparent;
   border: none;
   height: 50px;
@@ -39,11 +41,12 @@ const StyledActiveLine = styled.div`
   border-radius: 3px;
 `;
 
-const NavButton = ({ icon: Icon, children, ...others }) => {
-  const isActive = false;
+const NavButton = ({ icon: Icon, children, to, ...others }) => {
+  const { pathname, search } = useLocation();
+  const isActive = `${to}` === `${pathname}${search}`;
 
   return (
-    <StyledButton {...others}>
+    <StyledButton to={to} {...others}>
       {isActive && <StyledActiveLine />}
       <StyledImage>{isActive ? <Icon stroke="#2a8bf2" /> : <Icon />}</StyledImage>
       <StyledParagraph active={isActive}>{children}</StyledParagraph>
@@ -54,6 +57,10 @@ const NavButton = ({ icon: Icon, children, ...others }) => {
 NavButton.propTypes = {
   icon: PropTypes.instanceOf(Object).isRequired,
   children: PropTypes.string.isRequired,
+  to: PropTypes.string,
+};
+NavButton.defaultProps = {
+  to: '/',
 };
 
 export default NavButton;

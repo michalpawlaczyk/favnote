@@ -1,11 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { RegisterWithMail, LoginOrRegisterWithGoogle } from 'actions/actionsUser';
 import Input from 'components/atoms/Input/Input';
 import Button from 'components/atoms/Button/Button';
 import applogo from 'static/applogo.svg';
+import LoadingAnimation from 'components/atoms/LoadingAnimation/LoadingAnimation';
+import Paragraph from 'components/atoms/Paragraph/Paragraph';
+import { routes } from 'routes/routes';
 
 const StyledWrapper = styled.section`
   max-width: 600px;
@@ -25,8 +29,15 @@ const StyledApplogo = styled.img`
   display: block;
 `;
 
+const StyledParagraph = styled(Paragraph)`
+  display: block;
+  text-align: center;
+  margin: 4vh auto 0;
+`;
+
 const RegisterView = () => {
   const dispatch = useDispatch();
+  const { isRegistering } = useSelector(({ userReducer }) => userReducer);
 
   const handleLoginWithGoogle = () => {
     dispatch(LoginOrRegisterWithGoogle());
@@ -56,6 +67,7 @@ const RegisterView = () => {
           label="Email"
           onChange={formik.handleChange}
           value={formik.values.email}
+          required
         />
         <Input
           id="password"
@@ -64,6 +76,7 @@ const RegisterView = () => {
           label="Password"
           onChange={formik.handleChange}
           value={formik.values.password}
+          required
         />
         <Input
           id="confirmpassword"
@@ -72,14 +85,18 @@ const RegisterView = () => {
           label="Confirm password"
           onChange={formik.handleChange}
           value={formik.values.confirmpassword}
+          required
         />
         <StyledButtonWrapper>
-          <Button type="submit">Register</Button>
+          <Button type="submit">{isRegistering ? <LoadingAnimation red /> : 'Register'}</Button>
           <Button onClick={handleLoginWithGoogle} blue type="button">
-            Sign in with Google
+            {isRegistering ? <LoadingAnimation /> : 'Sign in with Google'}
           </Button>
         </StyledButtonWrapper>
       </form>
+      <StyledParagraph as={NavLink} to={routes.login}>
+        Already have an account ? Click here!
+      </StyledParagraph>
     </StyledWrapper>
   );
 };

@@ -9,8 +9,10 @@ import Heading from 'components/atoms/Heading/Heading';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import Button from 'components/atoms/Button/Button';
 import LoadingAnimation from 'components/atoms/LoadingAnimation/LoadingAnimation';
+import LinkIcon from 'static/link.svg';
 
 const StyledWrapper = styled.section`
+  position: relative;
   width: 80%;
   max-width: 1600px;
   padding: 36px;
@@ -58,11 +60,30 @@ const StyledDescriptionInput = styled(TextAreaAutosize)`
   font-family: inherit;
 `;
 
+const StyledHeading = styled(Heading)`
+  max-width: 90%;
+  display: inline-block;
+`;
+
+const StyledLinkButton = styled.a`
+  display: inline-block;
+  position: absolute;
+  top: 36px;
+  right: 36px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50px;
+  background: ${({ theme }) => theme.colors.blue} url(${LinkIcon}) no-repeat;
+  background-size: 60%;
+  background-position: 50%;
+`;
+
 const CardBigView = ({
-  pageType,
+  type,
   onRemoveClick,
   onEditClick,
   title,
+  url,
   description,
   isEditClicked,
   itemId,
@@ -76,14 +97,13 @@ const CardBigView = ({
     initialValues: {
       id: itemId,
       title,
-      articleUrl: '',
-      twitterURL: '',
+      url,
       description,
     },
     onSubmit: (values) => {
       dispatch(
         editItem({
-          type: pageType,
+          type,
           ...values,
         }),
       );
@@ -118,9 +138,10 @@ const CardBigView = ({
         </form>
       ) : (
         <>
-          <Heading small as="h2">
+          <StyledHeading small as="h2">
             {title}
-          </Heading>
+          </StyledHeading>
+          {type !== 'notes' && <StyledLinkButton href={url} target="_blank" />}
           <StyledLine />
           <StyledParagraphWrapper>
             <Paragraph>{description}</Paragraph>
@@ -143,15 +164,16 @@ CardBigView.propTypes = {
   onRemoveClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   isEditClicked: PropTypes.bool,
-  pageType: PropTypes.string,
+  type: PropTypes.string,
   itemId: PropTypes.number.isRequired,
 };
 
 CardBigView.defaultProps = {
   isEditClicked: false,
-  pageType: 'notes',
+  type: 'notes',
 };
 
 export default CardBigView;

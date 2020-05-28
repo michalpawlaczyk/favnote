@@ -12,7 +12,7 @@ const ItemView = () => {
   const idAsNumber = parseInt(id, 10);
   const dispatch = useDispatch();
   const history = useHistory();
-  const { title, description } = useSelector(({ itemsReducer }) => {
+  const { title, description, url } = useSelector(({ itemsReducer }) => {
     const tmp = itemsReducer[type];
     return tmp[idAsNumber] ? tmp[idAsNumber] : {};
   });
@@ -32,8 +32,9 @@ const ItemView = () => {
           onEditClick={handleEdit}
           title={title}
           description={description}
+          url={url}
           isEditClicked={isEditClicked}
-          pageType={type}
+          type={type}
           itemId={idAsNumber}
         />
       ) : (
